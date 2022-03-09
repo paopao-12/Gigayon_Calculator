@@ -1,7 +1,7 @@
 package com.example.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import org.mariuszgromada.math.mxparser.*;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.View;
@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
         int cursorPos = display.getSelectionStart();
         String leftStr = oldStr.substring(0, cursorPos);
         String rightStr = oldStr.substring(cursorPos);
-        if (getString(R.string.display).equals(display.getText().toString()))
+        if (getString(R.string.display).equals(display.getText().toString())) {
             display.setText(strToadd);
             display.setSelection(cursorPos + 1);
-
-
+        }
+        else
             display.setText(String.format("%s%s%s", leftStr, strToadd, rightStr));
             display.setSelection(cursorPos + 1);
         }
@@ -152,6 +152,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void equalsBTN(View view){
+        String userExp = display.getText().toString();
+
+        userExp = userExp.replaceAll("÷", "/");
+        userExp = userExp.replaceAll("×", "*");
+
+        Expression exp = new Expression(userExp);
+
+        String result = String.valueOf(exp.calculate());
+
+        display.setText(result);
+        display.setSelection(result.length());
 
     }
 
